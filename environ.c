@@ -1,15 +1,16 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 extern char **environ;
 
-int main(int ac, char **av, char **global)
+int main(void)
 {
-	unsigned int i;
+	char *s;
 
-	for (i = 0; global[i] != '\0'; i++)
-	{
-		printf("%p\n", global[i]);
-		printf("%p\n\n", environ[i]);
-	}
+	s = getenv("LOGNAME");
+	printf("%s\n", s);
+	putenv("LOGNAME=Victor");
+	s = getenv("LOGNAME");
+	printf("%s\n", s);
 	return (0);
 }

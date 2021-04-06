@@ -38,11 +38,13 @@ char* my_strtok(char* s, char* delm)
 
 int main(void)
 {
-	char s[] = "Hello Betty Holberton";
+	char s[] = "       Hello        Betty                    Holberton";
 	char delm[] = " ";
 	//char newstr[100];
 	int i, j = 0, k = 0;
 
+	char *str2 = strtok(s, delm);
+	printf("%s\n", str2);
 	char *str = my_strtok(s, delm);
 	for (i = 0; s[i] != '\0'; i++)
 	{
