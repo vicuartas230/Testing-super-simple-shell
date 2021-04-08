@@ -37,22 +37,6 @@ int _strncmp(char *s1, char *s2, size_t n)
 	return (e);
 }
 
-char *_getenv(const char *var)
-{
-	unsigned int l = strlen(var);
-	char *pos = NULL, *str = NULL;
-
-	while(*environ)
-	{
-		str = *environ;
-		pos = strchr(str, '=');
-		if (pos && (pos - str == l && !strncmp(str, var, l)))
-			return pos + 1;
-		environ++;
-	}
-	return (NULL);
-}
-
 char *_strtok(char *str, const char *delim)
 {
 	static int idx = 0;
@@ -83,7 +67,7 @@ char *_strtok(char *str, const char *delim)
 	return ('\0');
 }
 
-char **fill2pointer(int words, char *s)
+char **fill2pointer(int words, char *s, char *delim)
 {
 	char **tok = NULL, *t = NULL;
 	int i = 0;
@@ -91,16 +75,12 @@ char **fill2pointer(int words, char *s)
 	tok = malloc(words * sizeof(char *));
 	while (i < words)
 	{
-		t = _strtok(s, " "); /*_strtok is not returning the full tokens*/
-		printf("t: %s\n", t);
+		t = _strtok(s, delim); /*_strtok is not returning the full tokens*/
 		tok[i] = malloc(_strlen(t) * sizeof(char));
 		_strcpy(tok[i], t);
-		printf("ciclo: %s\n", tok[i]);
 		i++;
 	}
-	printf("fill: %s\n", tok[0]);
-	printf("fill: %s\n", tok[1]);
-	printf("fill: %s\n", tok[2]);
+	tok[i] = NULL;
 	return (tok);
 }
 
@@ -111,7 +91,7 @@ int counter_words(char * buff)
 
 	while (*buff)
 	{
-	        if (*buff == ' ' || *buff == '\n' || *buff == '\t')
+	        if (*buff == ' ' || *buff == '\n' || *buff == '\t' || *buff == ':')
 			state = 0;
 	        else if (state == 0)
 		{
@@ -141,4 +121,37 @@ int _strlen(char *s)
 	for (i = 0; s[i] != '\0'; i++)
 		;
 	return (i + 1);
+}
+
+char *_getenv(const char *var)
+{
+	unsigned int l = (_strlen((char *)var) - 1);
+	char *pos = NULL, *str = NULL;
+
+	while(*environ)
+	{
+		str = *environ;
+		pos = _strchr(str, '=');
+		if (pos && (pos - str == l && !_strncmp(str, (char *)var, l)))
+			return pos + 1;
+		environ++;
+	}
+	return (NULL);
+}
+
+char *_strcat(char *dest, char *src)
+{
+	int i, j, contador;
+
+	contador = 0;
+	for (i = 0 ; dest[i] != '\0' ; i++)
+	{
+		contador++;
+	}
+	for (j = 0 ; src[j] != '\0' ; j++)
+	{
+		dest[contador + j] = src[j];
+	}
+	dest[contador + j] = '\0';
+	return (dest);
 }

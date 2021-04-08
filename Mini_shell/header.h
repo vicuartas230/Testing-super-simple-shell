@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 extern char **environ;
 
@@ -17,7 +19,8 @@ char *_strchr(char *s, char c);
 char *_strtok(char *str, const char *delim);
 int _strlen(char *s);
 int counter_words(char * buff);
-char **fill2pointer(int word, char *s);
+char **fill2pointer(int word, char *s, char *delim);
 char *_strcpy(char *dest, char *src);
+char *_strcat(char *dest, char *src);
 
 #endif
