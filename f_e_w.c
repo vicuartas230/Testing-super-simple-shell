@@ -6,9 +6,11 @@ int main (int argc, char **argv)
 {
 	int wait_pid, i = 0;
 	int pid;
+
 	while (i < 5)
 	{
 		pid = fork();
+		wait_pid = wait(NULL);
 		if (pid == 0)
 		{
 			if (execve(argv[1], argv, NULL) < 0)
@@ -21,9 +23,10 @@ int main (int argc, char **argv)
 		}
 		else
 		{
-			wait_pid = wait(NULL);
 			printf ("%d %d %d \n", getpid(), pid, wait_pid);
+			wait_pid = wait(NULL);
 		}
 		i++;
 	}
+	return (0);
 }
