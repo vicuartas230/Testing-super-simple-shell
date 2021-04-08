@@ -58,7 +58,6 @@ char *_strtok(char *str, const char *delim)
 	static int idx = 0;
 	int state = 0, i = idx, j = 0;
 	char *b;
-	unsigned wc = 0;
 
 	b = malloc(1024 * sizeof(char));
 	while (str[i])
@@ -76,9 +75,7 @@ char *_strtok(char *str, const char *delim)
 			}
 			if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == delim[0])
 				b[j] = '\0';
-			++wc;
 			idx = i;
-			printf("%s\n", b);
 			return (b);
 		}
 		++i;
@@ -88,20 +85,23 @@ char *_strtok(char *str, const char *delim)
 
 char **fill2pointer(int words, char *s)
 {
-	char **a, *t;
-	int i = 0, j;
+	char **tok = NULL, *t = NULL;
+	int i = 0;
 
-	a = malloc(words * sizeof(char *));
+	tok = malloc(words * sizeof(char *));
 	while (i < words)
 	{
-		t = _strtok(s, " ");
-		printf("%s\n", t); /*_strtok is not returning the tokens full*/
-		a[i] = malloc((_strlen(t) + 1) * sizeof(char));
-		_strcpy(a[i], t);
-		printf("%s\n", a[i]);
+		t = _strtok(s, " "); /*_strtok is not returning the full tokens*/
+		printf("t: %s\n", t);
+		tok[i] = malloc(_strlen(t) * sizeof(char));
+		_strcpy(tok[i], t);
+		printf("ciclo: %s\n", tok[i]);
 		i++;
 	}
-	return (a);
+	printf("fill: %s\n", tok[0]);
+	printf("fill: %s\n", tok[1]);
+	printf("fill: %s\n", tok[2]);
+	return (tok);
 }
 
 int counter_words(char * buff)
@@ -138,7 +138,7 @@ int _strlen(char *s)
 {
 	int i;
 
-	for (i = 0; *s; i++)
-		s++;
-	return (i);
+	for (i = 0; s[i] != '\0'; i++)
+		;
+	return (i + 1);
 }
