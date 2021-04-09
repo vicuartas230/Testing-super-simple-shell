@@ -1,5 +1,5 @@
 #ifndef USER_INPUT_H
-    #define USER_INPUT_H
+#define USER_INPUT_H
 
     typedef enum
     {
@@ -12,4 +12,4 @@ void flush_input();
 
 input_status get_user_input(const char *prompt, char *user_input, size_t size);
 
-#endif
+#endif /* USER_INPUT_H */
