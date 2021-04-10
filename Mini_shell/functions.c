@@ -43,7 +43,7 @@ char *_strtok(char *str, const char *delim)
 	int state = 0, i = idx, j = 0;
 	char *b;
 
-	b = malloc(50 * sizeof(char));
+	b = malloc(1024 * sizeof(char));
 	if (b == NULL)
 		return (NULL);
 	while (str[i])
@@ -74,7 +74,7 @@ char **fill2pointer(int words, char *s, char *delim)
 	char **tok = NULL, *t = NULL;
 	int i = 0;
 
-	tok = malloc((words + 1) * sizeof(char *));
+	tok = malloc(words * sizeof(char *));
 	if (tok == NULL)
 		return (NULL);
 	while (i < words)
@@ -99,10 +99,12 @@ char **fill2pointer(int words, char *s, char *delim)
 
 void free_2p(char **com)
 {
-	while (*com)
+	int i = 0;
+
+	while (com[i])
 	{
-		free(*com);
-		com++;
+		free(com[i]);
+		i++;
 	}
 	free(com);
 }

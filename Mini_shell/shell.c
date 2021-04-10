@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	char *a = NULL, **com, *e = NULL, **paths = NULL, *dest;
+	char *a = NULL, **com = NULL, *e = NULL, **paths = NULL, *dest;
 	pid_t child_pid;
 	int c, w, p = 1, r, sta, z = 0;
 	size_t b = 0;
@@ -21,19 +21,20 @@ int main(void)
 			{
 				w = counter_words(a);
 				com = fill2pointer(w, a, " ");
+				printf("%s", com[0]);
+				printf("%s", com[1]);
+				printf("%s", com[2]);
 				if(a[0] == '/')
 				{
 					sta = stat(com[0], &st);
 					if (!sta)
 					{
-						execve(com[0], com, NULL);
-						printf("después de ejecutar");
-						free_2p(com);
-						printf("después de liberar");
+						if (execve(com[0], com, NULL) == -1)
+							printf("Execve falló");
 						exit(1);
 					}
 					else
-						printf("%d : %s\n", z, "Not Found"), free_2p(com), exit(-1);
+						printf("%d : %s\n", z, "Not Found"), exit(-1);
 				}
 				else
 				{
@@ -49,7 +50,6 @@ int main(void)
 							{
 								_strcat(paths[p], "/");
 								dest = _strcat(paths[p], com[0]);
-								free_2p(paths);
 								break;
 							}
 						}
@@ -57,10 +57,8 @@ int main(void)
 						p++;
 					}
 					r = execve(dest, com, NULL);
-					free_2p(com);
 					if (r == -1)
 					{
-						free_2p(com);
 						printf("%d : %s\n", z, "Not found");
 						exit(-1);
 					}
@@ -72,6 +70,8 @@ int main(void)
 			else
 				wait(NULL);
 		}
+/*		free_2p(com);
+		free_2p(paths);*/
 	} while (c != EOF);
 	printf("\n");
 	free(a);
