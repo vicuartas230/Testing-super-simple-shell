@@ -20,7 +20,7 @@ char *_strchr(char *s, char c)
 
 int _strncmp(char *s1, char *s2, size_t n)
 {
-	int a, e;
+	size_t a, e;
 
 	for (a = 0; a < n; a++)
 	{
@@ -43,7 +43,9 @@ char *_strtok(char *str, const char *delim)
 	int state = 0, i = idx, j = 0;
 	char *b;
 
-	b = malloc(1024 * sizeof(char));
+	b = malloc(50 * sizeof(char));
+	if (b == NULL)
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == delim[0])
@@ -72,11 +74,22 @@ char **fill2pointer(int words, char *s, char *delim)
 	char **tok = NULL, *t = NULL;
 	int i = 0;
 
-	tok = malloc(words * sizeof(char *));
+	tok = malloc((words + 1) * sizeof(char *));
+	if (tok == NULL)
+		return (NULL);
 	while (i < words)
 	{
-		t = _strtok(s, delim); /*_strtok is not returning the full tokens*/
+		t = _strtok(s, delim);
 		tok[i] = malloc(_strlen(t) * sizeof(char));
+		if (tok[i] == NULL)
+		{
+			while (i >= 0)
+			{
+				free(tok[i]);
+				i--;
+			}
+			free(tok);
+		}
 		_strcpy(tok[i], t);
 		i++;
 	}
@@ -84,10 +97,20 @@ char **fill2pointer(int words, char *s, char *delim)
 	return (tok);
 }
 
+void free_2p(char **com)
+{
+	while (*com)
+	{
+		free(*com);
+		com++;
+	}
+	free(com);
+}
+
 int counter_words(char * buff)
 {
 	int state = 0;
-	unsigned wc = 0; // word count
+	unsigned wc = 0;
 
 	while (*buff)
 	{

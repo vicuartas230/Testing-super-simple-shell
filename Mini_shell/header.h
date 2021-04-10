@@ -22,5 +22,6 @@ int counter_words(char * buff);
 char **fill2pointer(int word, char *s, char *delim);
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
+void free_2p(char **com);
 
 #endif
